@@ -56,6 +56,12 @@ using namespace __gnu_pbds;
 
 using namespace std;
 
+int isoperator(string c)
+{
+    if (c == "^" || c == "/" || c == "*" || c == "+" || c == "-"||c=="(")
+        return 1;
+    return 0;
+}
 int inpre(string c)
 {
     if (c == "^")
@@ -95,6 +101,16 @@ vector<string> stov(string s)
         else
         {
             temp += s[i];
+        }
+        if (temp=="-")
+        {
+            if (v.empty())
+                v.pb("0");
+            else
+            {
+                if (isoperator(v.back()))
+                    v.pb("0");
+            }
         }
         v.pb(temp);
     }
