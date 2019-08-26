@@ -11,7 +11,7 @@ int isoperator(string c)
         return 1;
     return 0;
 }
-int inpre(string c)
+int inputprec(string c)
 {
     if (c == "^")
         return 5;
@@ -21,7 +21,7 @@ int inpre(string c)
         return 2;
 }
 
-int outpre(string c)
+int outputprec(string c)
 {
     if (c == "^")
         return 6;
@@ -39,7 +39,6 @@ vector<string> stov(string s)
         string temp = "";
         if ((s[i] >= '0' && s[i] <= '9'))
         {
-            int j = i;
             while (i != s.length() && s[i] >= '0' && s[i] <= '9')
             {
                 temp += s[i];
@@ -53,13 +52,8 @@ vector<string> stov(string s)
         }
         if (temp=="-")
         {
-            if (v.empty())
+            if (v.empty() || v.back()=="(")
                 v.push_back("0");
-            else
-            {
-                if (isoperator(v.back()))
-                    v.push_back("0");
-            }
         }
         v.push_back(temp);
     }
@@ -93,7 +87,7 @@ vector<string> post(vector<string> s)
         }
         else
         {
-            while (st.top() != "E" && outpre(s[i]) < inpre(st.top()))
+            while (st.top() != "E" && outputprec(s[i]) < inputprec(st.top()))
             {
                 string c = st.top();
                 st.pop();
@@ -118,7 +112,6 @@ struct node
 };
 node *ctree(vector<string> str)
 {
-
     node *root = NULL;
     vector<node *> stv;
     int i = 0;
